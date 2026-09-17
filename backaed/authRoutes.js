@@ -4,8 +4,9 @@ import {
   paramsCorrectLogin,
   userExsitsLogin,
   passwordCorrectLogin,
+  verifyToken,
 } from "./middlewares/middleware.js";
-import { login, signUp } from "./service/authService.js";
+import { getUser, login, signUp } from "./service/authService.js";
 
 export const router = Router();
 
@@ -26,6 +27,7 @@ router.post(
   async (req, res, next) => {
     try {
       const { token, data } = login(req);
+      res.cookie("token", token, { httpOnly: true });
       res.status(201).json({ token, data, message: "login successfully" });
     } catch (error) {
       next(error);
@@ -33,10 +35,10 @@ router.post(
   },
 );
 
-router.post("/logout", (req, res, next) => {
+router.get("/get-user/:username", verifyToken, async (req, res, next) => {
   try {
-    const result = fn();
-    res.status(201).json({ message: result });
+    const data = await getUser(req.params);
+    res.status(201).json({ data });
   } catch (error) {
     next(error);
   }

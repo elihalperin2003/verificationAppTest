@@ -1,5 +1,8 @@
 import { readFile } from "../db/readAndWrite.js";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
+const SECRET = process.env.SECRET;
 
 export const paramsCorrectSignUp = (req, res, next) => {
   const { username, email, password } = req.body;
@@ -30,4 +33,16 @@ export const passwordCorrectLogin = async (req, res, next) => {
   const isMetch = await bcrypt.compare(password, hashPassword);
   if (!isMetch) return res.status(401).json({ error: "password incorrect" });
   next();
+};
+
+export const verifyToken = async (req, res, next) => {
+  try {
+    const { token } = req.cookies;
+    const payload = jwt.verify(token, SECRET);
+    if (payload.username != req.params.username)
+      return res.status(401).json({ error: "Connection failed" });
+    next();
+  } catch (error) {
+    return res.status(401).json({ error: "Connection failed" });
+  }
 };
