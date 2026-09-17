@@ -15,3 +15,9 @@ export async function signUp({ username, email, password }) {
   const token = createToken(username, email);
   return token;
 }
+
+export function login({ user }) {
+  const { username, email } = user;
+  const token = createToken(username, email);
+  return { token, data: { username, email } };
+}
