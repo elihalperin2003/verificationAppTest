@@ -7,3 +7,7 @@ Environment variables(.env)
 
 PORT=
 SECRET=
+
+Run in browser
+
+npm run dev
