@@ -1,14 +1,24 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ProfilePage = () => {
   const { state } = useLocation();
   const { username, email } = state;
-  console.log(state);
-
+  const navigate = useNavigate();
   return (
-    <div>
-      hello - {username}, {email}
-    </div>
+    <>
+      <div>
+        hello {username}. email: {email}
+      </div>
+      <button
+        onClick={() => {
+          document.cookie = "";
+          alert("log out succesfully");
+          navigate("/");
+        }}
+      >
+        logout
+      </button>
+    </>
   );
 };
 
