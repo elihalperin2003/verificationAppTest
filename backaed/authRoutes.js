@@ -1,11 +1,13 @@
 import { Router } from "express";
+import { paramsCorrect } from "./middlewares/signUpMiddleware.js";
+import { signUp } from "./service/authService.js";
 
-const router = Router();
+export const router = Router();
 
-router.post("/sign-up", (req, res, error) => {
+router.post("/sign-up", paramsCorrect, async (req, res, error) => {
   try {
-    const result = fn();
-    res.status(201).json({ token: result });
+    const token = await signUp(req.body);
+    res.status(201).json({ token, message: "sign up successfully" });
   } catch (error) {
     next(error);
   }

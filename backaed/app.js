@@ -1,10 +1,14 @@
 import express from "express";
+import "dotenv/config";
+import { router } from "./authRoutes.js";
 
 const PORT = process.env.PORT;
 
 const app = express();
 
-app.use(json());
+app.use(express.json());
+
+app.use(router);
 
 app.use((err, _req, res, _next) => {
   if (err) {
